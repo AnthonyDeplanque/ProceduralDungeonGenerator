@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include "Dungeon.h"
 #include "Direction.h"
 
@@ -11,9 +12,18 @@ int main()
 	Room firstRoom(LIMIT_X / 2, LIMIT_Y / 2);
 	Dungeon dungeon;
 
-	dungeon.addRoom(std::make_unique<Room>(firstRoom));
-	dungeon.addRoom(std::make_unique<Room>(Direction::NORTH,firstRoom));
-	dungeon.addRoom(std::make_unique<Room>(Direction::SOUTH,firstRoom));
+	dungeon.addRoom(std::make_shared<Room>(firstRoom));
+
+
+	std::shared_ptr<Room> dungeonRoom = dungeon.getRoomPtrList()[0];
+
+	dungeon.addRoom(std::make_shared<Room>(Direction::NORTH, dungeonRoom.get()));
+	dungeon.addRoom(std::make_shared<Room>(Direction::EAST, dungeonRoom.get()));
+
+	for (int i = 0; i < dungeon.getRoomPtrList().size(); i++)
+	{
+		std::cout << "for loop > "<< dungeon.getRoomPtrList()[i].get() << std::endl;
+	}
 
 	dungeon.printRoomList();
 }

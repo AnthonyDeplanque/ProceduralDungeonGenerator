@@ -8,11 +8,13 @@ class Dungeon
 {
 public:
 	Dungeon();
-	void addRoom(std::unique_ptr<Room> room);
+	void addRoom(std::shared_ptr<Room> room);
 	void printRoomList();
 
-	//inline std::vector<std::unique_ptr<Room>> getRooms() {} ;
+	std::vector<std::shared_ptr<Room>> getRoomPtrList();
+
+	//inline std::vector<std::shared_ptr<Room>> getRooms() {} ;
 private:
-	std::vector<std::unique_ptr<Room>> rooms{};
+	std::vector<std::shared_ptr<Room>> rooms{};
 };
 
