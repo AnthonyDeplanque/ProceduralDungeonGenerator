@@ -1,4 +1,5 @@
 #include "Vector2d.h"
+
 class DirectionIncrementation {
 public:
 	static Vector2d NORTH_DIRECTION_INCREMENT;

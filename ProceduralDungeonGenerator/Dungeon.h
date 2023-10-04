@@ -10,9 +10,9 @@ public:
 	Dungeon();
 	void addRoom(std::unique_ptr<Room> room);
 	void printRoomList();
-	void checkNeighborRooms(Room* room);
-	std::vector<std::unique_ptr<Room>> getRooms();
+
+	//inline std::vector<std::unique_ptr<Room>> getRooms() {} ;
 private:
-	std::vector<std::unique_ptr<Room>> rooms;
+	std::vector<std::unique_ptr<Room>> rooms{};
 };
 

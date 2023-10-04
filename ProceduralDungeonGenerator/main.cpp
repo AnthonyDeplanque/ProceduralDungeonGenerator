@@ -1,8 +1,10 @@
 #include <iostream>
 #include "Dungeon.h"
+#include "Direction.h"
 
 int main()
 {
+
 	int const LIMIT_X = 20;
 	int const LIMIT_Y = 20;
 
@@ -10,7 +12,8 @@ int main()
 	Dungeon dungeon;
 
 	dungeon.addRoom(std::make_unique<Room>(firstRoom));
-	dungeon.addRoom(std::make_unique<Room>(Room(Direction::NORTH, *dungeon.getRooms()[0])));
-	dungeon.addRoom(std::make_unique<Room>(Room(Direction::SOUTH, *dungeon.getRooms()[0])));
+	dungeon.addRoom(std::make_unique<Room>(Direction::NORTH,firstRoom));
+	dungeon.addRoom(std::make_unique<Room>(Direction::SOUTH,firstRoom));
+
 	dungeon.printRoomList();
 }

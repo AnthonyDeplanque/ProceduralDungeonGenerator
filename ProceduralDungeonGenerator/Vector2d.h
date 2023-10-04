@@ -13,8 +13,8 @@ public:
 	void operator+=(Vector2d const other);
 
 private:
-	int x{};
-	int y{};
+	int x{0};
+	int y{0};
 
 };
 

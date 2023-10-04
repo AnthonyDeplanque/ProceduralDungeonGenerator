@@ -35,11 +35,3 @@ void Dungeon::printRoomList()
 
 }
 
-void Dungeon::checkNeighborRooms(Room* room)
-{
-
-}
-
-std::vector<std::unique_ptr<Room>> Dungeon::getRooms() {
-	return rooms;
-}

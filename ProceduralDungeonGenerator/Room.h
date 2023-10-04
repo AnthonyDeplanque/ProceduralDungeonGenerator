@@ -5,17 +5,20 @@
 class Room
 {
 public:
-	inline Room(int x, int y) {
+	inline Room(const int x, const int y) 
+	{
+		coords = Vector2d(0,0);
+		neighbors = Neighbors();
 		coords.setX(x);
 		coords.setY(y);
 	};
-	Room(Direction to, Room parentRoom) ;
+	Room(Direction to, Room &parentRoom) ;
 
 	inline Vector2d getCoords() { return coords; }
 	inline Neighbors getNeighbors() { return neighbors; }
 
 private:
-	Vector2d coords{};
-	Neighbors neighbors{};
+	Vector2d coords;
+	Neighbors neighbors;
 };
 
