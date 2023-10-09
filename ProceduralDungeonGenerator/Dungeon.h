@@ -1,7 +1,7 @@
 #pragma once
 #include <iostream>
 #include <vector>
-
+#include "DirectionIncrementation.h"
 #include "Room.h"
 #include "Vector2d.h"
 
@@ -22,6 +22,7 @@ private:
 	std::array<Vector2d, 4> createTemporaryNeighborsCoords(Vector2d origin);
 	bool checkRoomNeighbors(Room newRoom); // return true if no neighbors except parent room for the future room
 	
+	DirectionIncrementation d;
 	std::vector<std::shared_ptr<Room>> rooms{};
 	std::vector<std::shared_ptr<Room>> temporaryRooms{};
 };
