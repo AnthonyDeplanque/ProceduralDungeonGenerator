@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "Direction.h"
+#include "Vector2d.h"
 class Room
 {
 public:
@@ -11,6 +12,11 @@ public:
 		coords.setY(y);
 		age = 0;
 	};
+
+	inline Room(Vector2d p_coords) { 
+		coords = p_coords; 
+		age = 0;
+	}
 
 	Room(Direction to, Room *parentRoomPtr) ;
 	inline Vector2d getCoords() { return coords; }

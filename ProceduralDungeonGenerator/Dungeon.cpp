@@ -3,74 +3,78 @@
 
 #include <array>
 #include <iostream>
+#include <random>
 
 Dungeon::Dungeon() = default;
 
-
+// add manually a room
 void Dungeon::addRoom(std::shared_ptr<Room> room)
 {
 	std::cout << "add room > " << room << std::endl;
 	rooms.push_back(std::move(room));
 }
 
+std::vector<std::shared_ptr<Room>> Dungeon::getLastGenerationRoomsPtr()
+{
+	return lastGenerationRooms;
+}
+
 void Dungeon::printRoomList()
 {
 	for (int i = 0; i < rooms.size(); i++)
 	{
-		Room room = *rooms[i];
-		std::cout << "room " << i + 1 << " --- " << room.getCoords().getX() << " : " << room.getCoords().getY() << std::endl;
+		Room firstRoom = *rooms[i];
+		std::cout << "room " << i + 1 << " --- " << firstRoom.getCoords().getX() << " : " << firstRoom.getCoords().getY() << std::endl;
 		for (int j = 0; j < rooms.size(); j++)
 		{
 			Room secondRoom = *rooms[j];
-			if (room.getCoords() + d.NORTH_DIRECTION_INCREMENT == secondRoom.getCoords())
-			{
-			std::cout << "neighbor at north" << std::endl;
-			}			
-			if (room.getCoords() + d.SOUTH_DIRECTION_INCREMENT == secondRoom.getCoords())
-			{
-			std::cout << "neighbor at south" << std::endl;
-			}			
-			if (room.getCoords() + d.EAST_DIRECTION_INCREMENT == secondRoom.getCoords())
-			{
-			std::cout << "neighbor at east" << std::endl;
-			}			
-			if (room.getCoords() + d.WEST_DIRECTION_INCREMENT == secondRoom.getCoords())
-			{
-			std::cout << "neighbor at west" << std::endl;
-			}
+
+			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.NORTH_DIRECTION_INCREMENT)) std::cout << "neighbor at north" << std::endl;
+			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.SOUTH_DIRECTION_INCREMENT)) std::cout << "neighbor at south" << std::endl;
+			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.EAST_DIRECTION_INCREMENT)) std::cout << "neighbor at east" << std::endl;
+			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.WEST_DIRECTION_INCREMENT)) std::cout << "neighbor at west" << std::endl;
+
 		}
 
 	}
 }
 
+bool Dungeon::checkDirectionnalNeighbor(Room firstRoom, Room secondRoom, Vector2d direction)
+{
+	return ((firstRoom.getCoords() + direction) == secondRoom.getCoords());
+}
 
 std::vector<std::shared_ptr<Room>> Dungeon::getRoomPtrList()
 {
 	return rooms;
 }
 
-Room Dungeon::createTemporaryRoom(Room parentRoom, Vector2d direction)
+Room Dungeon::createTemporaryRoom(Vector2d roomCoords)
 {
-	return parentRoom;
+	return Room(roomCoords);
 }
 
-bool Dungeon::checkRoomNeighbors(Room newRoom)
-{
-	Vector2d newRoomCoords = newRoom.getCoords();
-	// check 4 directions, ignore if direction is parentRoom;
-	std::array<Vector2d, 4> temporaryNeighbors = createTemporaryNeighborsCoords(newRoomCoords);
 
-	for (int neighborCoordsIteration = 0; neighborCoordsIteration < temporaryNeighbors.size(); neighborCoordsIteration++)
+// Checks neighbors of the future room, returns true if it can be created (no neighbors excepts parent room)
+bool Dungeon::checkRoomNeighbors(Vector2d newRoomCoords)
+{
+	// check 4 directions, ignore if direction is parentRoom;
+	std::vector<Vector2d> temporaryNeighbors = createTemporaryNeighborsCoords(newRoomCoords);
+
+	for (int i = 0; i < temporaryNeighbors.size(); i++)
 	{
-		if (temporaryNeighbors[neighborCoordsIteration] == newRoom.getCoords())
+		Vector2d secondRoomCoords = temporaryNeighbors[i];
+
+		//if parent's coords
+		if (secondRoomCoords == newRoomCoords)
 		{
 			break;
 		}
 
 		// if no neighbors for each direction, return true, else return false;
-		for (int i = 0; i < rooms.size(); i++)
+		for (int j = 0; j < rooms.size(); j++)
 		{
-			if (rooms[i]->getCoords() == temporaryNeighbors[neighborCoordsIteration])
+			if (rooms[j]->getCoords() == temporaryNeighbors[i])
 			{
 				return false;
 			}
@@ -82,34 +86,143 @@ bool Dungeon::checkRoomNeighbors(Room newRoom)
 
 }
 
-std::shared_ptr<Room> Dungeon::generateRoom(std::shared_ptr<Room> room, int generationAge)
+
+//OK
+std::vector<Vector2d> Dungeon::createTemporaryNeighborsCoords(Vector2d origin)
 {
-	// Check Neighbors
-	if (checkRoomNeighbors(*room))
+
+	std::vector<Vector2d> fourDirectionNeighbors
 	{
-
-	}
-	// Check future room Neighbors
-
-	// increment room in a temporary vector array
-
-	return room;
-}
-
-
-std::vector<std::shared_ptr<Room>> Dungeon::roomsGeneration(std::shared_ptr<Room> parentRoom, int generationAge)
-{
-	return rooms;
-}
-
-std::array<Vector2d, 4> Dungeon::createTemporaryNeighborsCoords(Vector2d origin)
-{
-	std::array<Vector2d, 4> fourDirectionNeighbors
-	{
-		origin + d.NORTH_DIRECTION_INCREMENT,
-		origin + d.SOUTH_DIRECTION_INCREMENT,
-		origin + d.EAST_DIRECTION_INCREMENT,
-		origin + d.WEST_DIRECTION_INCREMENT
+		(origin + d.NORTH_DIRECTION_INCREMENT),
+		(origin + d.SOUTH_DIRECTION_INCREMENT),
+		(origin + d.EAST_DIRECTION_INCREMENT),
+		(origin + d.WEST_DIRECTION_INCREMENT)
 	};
+
 	return fourDirectionNeighbors;
 }
+
+std::vector<std::shared_ptr<Vector2d>> Dungeon::prepareFutureRooms(Room& parentRoom)
+{
+	Vector2d parentRoomCoords = parentRoom.getCoords();
+
+	// check 4 directions
+	std::vector<Vector2d> temporaryNeighbors = createTemporaryNeighborsCoords(parentRoomCoords);
+	std::vector<std::shared_ptr<Vector2d>> potentiallyAddableRoomsCoords;
+
+	for (int i = 0; i < temporaryNeighbors.size(); i++)
+	{
+		bool addRoomCoords = true;
+		// If room already exist, skip
+		for (int j = 0; j < rooms.size(); j++)
+		{
+			Room& roomToCheck = *rooms[j];
+			if (roomToCheck.getCoords() == temporaryNeighbors[i])
+			{
+				addRoomCoords = false;
+			}
+			if (addRoomCoords) {
+				potentiallyAddableRoomsCoords.push_back(std::make_shared<Vector2d>(temporaryNeighbors[i]));
+			}
+		}
+	}
+	return potentiallyAddableRoomsCoords;
+}
+
+void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
+{
+	// check neighbors to know where can room be created
+	Room parentRoom = *room;
+
+	std::vector<std::shared_ptr<Vector2d>> potentiallyFutureRooms = prepareFutureRooms(parentRoom);
+
+	for (int i = 0; i < potentiallyFutureRooms.size(); i++)
+
+		// Check Future room Neighbors
+		if (checkRoomNeighbors(*potentiallyFutureRooms[i]))
+		{
+			//create new temporary room
+			Room newRoom = createTemporaryRoom(*potentiallyFutureRooms[i]);
+			// Push to temp array
+			temporaryRooms.push_back(std::move(std::make_shared<Room>(newRoom)));
+		}
+
+	for (int i = 0; i < temporaryRooms.size(); i++)
+	{
+		Room room = *temporaryRooms[i];
+		std::cout << room.getCoords().getX() << ":" << room.getCoords().getY() << std::endl;
+	}
+
+
+	// if no generation Age, push all temp rooms in generated rooms
+	if (generationAge == 0)
+	{
+		rooms.insert(rooms.end(), temporaryRooms.begin(), temporaryRooms.end());
+	}
+
+	// Else, we randomly select created ones
+	else
+	{
+		int roomVectorSize = temporaryRooms.size();
+		int basicGenerationCount = 3;
+		if (basicGenerationCount > roomVectorSize)
+		{
+			basicGenerationCount = roomVectorSize;
+		}
+		// We maxx the basic generation count to 3. it will increment every 3 rooms;
+		int generationCount = floor(basicGenerationCount + (generationAge / 3));
+		std::random_device generator;
+		std::vector<int> roomIndexGenerated;
+
+		for (int i = 0; i < generationCount; i++) {
+			bool isGenerated = false;
+			while (isGenerated == false)
+			{
+				std::uniform_int_distribution<int> roomIndexToGenerate = std::uniform_int_distribution<int>{ 0, roomVectorSize };
+				int roomIndex = roomIndexToGenerate(generator);
+				auto find = std::find(roomIndexGenerated.begin(), roomIndexGenerated.end(), roomIndex);
+				if (find != roomIndexGenerated.end())
+				{
+					roomIndexGenerated.push_back(roomIndex);
+					isGenerated = true;
+				}
+
+			}
+
+		}
+			clearLastGenerationRooms();
+		for (int i = 0; i < roomIndexGenerated.size(); i++)
+		{
+			addRoom(temporaryRooms[roomIndexGenerated[i]]);
+			lastGenerationRooms.push_back(temporaryRooms[roomIndexGenerated[i]]);
+		}
+
+	}
+	temporaryRooms.clear();
+}
+
+void Dungeon::clearLastGenerationRooms()
+{
+	lastGenerationRooms.clear();
+}
+
+
+void Dungeon::generateRoomsByLastGeneratedRooms(int generationAge)
+{
+	if (getLastGenerationRoomsPtr().size() != 0) {
+	for (int i = 0; i < getLastGenerationRoomsPtr().size(); i++)
+	{
+		auto lastRoom = getLastGenerationRoomsPtr()[i];
+		generateRooms(lastRoom, generationAge);
+	}
+	}
+	else {
+		auto room = rooms[0];
+		generateRooms(room, generationAge);
+	}
+
+	
+	// clear temporary rooms
+
+}
+

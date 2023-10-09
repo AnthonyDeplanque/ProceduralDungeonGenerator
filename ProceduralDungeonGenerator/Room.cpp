@@ -29,6 +29,8 @@ Room::Room(Direction to, Room* parentRoomPtr)
 		coords += d.WEST_DIRECTION_INCREMENT;
 		break;
 	}
+
+	age = 0;
 }
 
 

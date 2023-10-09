@@ -17,13 +17,15 @@ int main()
 
 	std::shared_ptr<Room> dungeonRoom = dungeon.getRoomPtrList()[0];
 
-	dungeon.addRoom(std::make_shared<Room>(Direction::NORTH, dungeonRoom.get()));
-	dungeon.addRoom(std::make_shared<Room>(Direction::EAST, dungeonRoom.get()));
+//	dungeon.addRoom(std::make_shared<Room>(Direction::NORTH, dungeonRoom.get()));
+//	dungeon.addRoom(std::make_shared<Room>(Direction::EAST, dungeonRoom.get()));
 
-	for (int i = 0; i < dungeon.getRoomPtrList().size(); i++)
-	{
-		std::cout << "for loop > "<< dungeon.getRoomPtrList()[i].get() << std::endl;
+	for (int i = 0; i < 2; i++) {
+		dungeon.generateRoomsByLastGeneratedRooms(i);
 	}
 
 	dungeon.printRoomList();
+
+
+	return EXIT_SUCCESS;
 }
