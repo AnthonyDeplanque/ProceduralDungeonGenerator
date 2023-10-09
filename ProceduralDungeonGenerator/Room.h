@@ -11,6 +11,7 @@ public:
 		neighbors = Neighbors();
 		coords.setX(x);
 		coords.setY(y);
+		age = 0;
 	};
 
 	Room(Direction to, Room *parentRoomPtr) ;
@@ -21,5 +22,6 @@ public:
 private:
 	Vector2d coords;
 	Neighbors neighbors;
+	int age{};
 };
 

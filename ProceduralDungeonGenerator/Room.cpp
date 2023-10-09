@@ -34,8 +34,8 @@ Room::Room(Direction to, Room* parentRoomPtr)
 		neighbors.setNeighBor(Direction::EAST);
 		break;
 	}
-
 }
+
 
 
 
