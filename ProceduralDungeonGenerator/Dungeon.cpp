@@ -33,9 +33,7 @@ void Dungeon::printRoomList()
 			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.SOUTH_DIRECTION_INCREMENT)) std::cout << "neighbor at south" << std::endl;
 			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.EAST_DIRECTION_INCREMENT)) std::cout << "neighbor at east" << std::endl;
 			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.WEST_DIRECTION_INCREMENT)) std::cout << "neighbor at west" << std::endl;
-			
 		}
-
 	}
 }
 
@@ -51,13 +49,15 @@ std::vector<std::shared_ptr<Room>> Dungeon::getRoomPtrList()
 
 Room Dungeon::createTemporaryRoom(Vector2d roomCoords)
 {
-	return Room(roomCoords);
+	return Room(roomCoords, 0);
 }
 
 
 // Checks neighbors of the future room, returns true if it can be created (no neighbors excepts parent room)
 bool Dungeon::checkRoomNeighbors(Vector2d newRoomCoords)
 {
+	// std::cout<< "new room coords -- "<< newRoomCoords.getX() << " : " << newRoomCoords.getY() << std::endl;
+	
 	// check 4 directions, ignore if direction is parentRoom;
 	std::vector<Vector2d> temporaryNeighbors = createTemporaryNeighborsCoords(newRoomCoords);
 
@@ -81,13 +81,9 @@ bool Dungeon::checkRoomNeighbors(Vector2d newRoomCoords)
 		}
 		return true;
 	}
-
-
-
 }
 
 
-//OK
 std::vector<Vector2d> Dungeon::createTemporaryNeighborsCoords(Vector2d origin)
 {
 
@@ -150,16 +146,14 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 	for (int i = 0; i < temporaryRooms.size(); i++)
 	{
 		Room room = *temporaryRooms[i];
-		std::cout <<"Temporary room -- " << room.getCoords().getX() << ":" << room.getCoords().getY() << std::endl;
+		//std::cout <<"Temporary room -- " << room.getCoords().getX() << ":" << room.getCoords().getY() << std::endl;
 	}
 
 
 	// if no generation Age, push all temp rooms in generated rooms
 	if (generationAge == 0)
 	{
-
 		rooms.insert(rooms.end(), temporaryRooms.begin(), temporaryRooms.end());
-
 	}
 
 	// Else, we randomly select created ones
@@ -177,7 +171,8 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 		std::random_device generator;
 		std::vector<int> roomIndexGenerated;
 
-		for (int i = 0; i < generationCount; i++) {
+		for (int i = 0; i < generationCount; i++) 
+		{
 			bool isGenerated = false;
 			while (isGenerated == false)
 			{
@@ -186,6 +181,8 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 				std::uniform_int_distribution<int> roomIndexToGenerate = std::uniform_int_distribution<int>{ 0, roomVectorSize };
 				
 				int roomIndex = roomIndexToGenerate(generator);
+				std::cout << "room index : " << roomIndex << std::endl;
+
 				auto find = std::find(roomIndexGenerated.begin(), roomIndexGenerated.end(), roomIndex);
 				
 				if (find != roomIndexGenerated.end())
@@ -197,11 +194,10 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 				{
 					break;
 				}
-
 			}
-
 		}
-			clearLastGenerationRooms();
+		clearLastGenerationRooms();
+		// NO LAST GENERATION ROOMS
 		for (int i = 0; i < roomIndexGenerated.size(); i++)
 		{
 			addRoom(temporaryRooms[roomIndexGenerated[i]]);
@@ -220,15 +216,19 @@ void Dungeon::clearLastGenerationRooms()
 
 void Dungeon::generateRoomsByLastGeneratedRooms(int generationAge)
 {
-	if (getLastGenerationRoomsPtr().size() != 0) {
-		
+	if (getLastGenerationRoomsPtr().size() != 0) 
+	{	
+		std::cout << "generation from last generated rooms "<<std::endl;
+			std::cout << getLastGenerationRoomsPtr().size() <<" last generated rooms" << std::endl;
 		for (int i = 0; i < getLastGenerationRoomsPtr().size(); i++)
 		{
 		auto lastRoom = getLastGenerationRoomsPtr()[i];
 		generateRooms(lastRoom, generationAge);
 		}
 	}
-	else {
+	else 
+	{
+		std::cout << "no previous generation "<<std::endl;
 		auto room = rooms[0];
 		generateRooms(room, generationAge);
 	}

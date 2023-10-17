@@ -30,8 +30,8 @@ private:
 
 
 	DirectionIncrementation d;
-	std::vector<std::shared_ptr<Room>> rooms{};
-	std::vector<std::shared_ptr<Room>> temporaryRooms{};
-	std::vector<std::shared_ptr<Room>> lastGenerationRooms{};
+	std::vector<std::shared_ptr<Room>> rooms{}; // Generated rooms
+	std::vector<std::shared_ptr<Room>> temporaryRooms{}; // Temp rooms
+	std::vector<std::shared_ptr<Room>> lastGenerationRooms{}; // Rooms generated from the last generation
 };
 
