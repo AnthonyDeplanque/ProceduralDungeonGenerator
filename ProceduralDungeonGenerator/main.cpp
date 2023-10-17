@@ -14,16 +14,14 @@ int main()
 
 	dungeon.addRoom(std::make_shared<Room>(firstRoom));
 
-
 	std::shared_ptr<Room> dungeonRoom = dungeon.getRoomPtrList()[0];
 
 //	dungeon.addRoom(std::make_shared<Room>(Direction::NORTH, dungeonRoom.get()));
 //	dungeon.addRoom(std::make_shared<Room>(Direction::EAST, dungeonRoom.get()));
 
-	for (int i = 0; i < 2; i++) {
-		dungeon.generateRoomsByLastGeneratedRooms(i);
-	}
-
+	dungeon.generateRoomsByLastGeneratedRooms(0);
+	dungeon.generateRoomsByLastGeneratedRooms(1);
+	
 	dungeon.printRoomList();
 
 

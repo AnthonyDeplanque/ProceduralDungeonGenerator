@@ -19,6 +19,9 @@ public:
 	}
 
 	Room(Direction to, Room *parentRoomPtr) ;
+	
+	//inline ~Room() { std::cout << "room deleted" << std::endl; }
+	
 	inline Vector2d getCoords() { return coords; }
 
 

@@ -16,7 +16,8 @@ void Dungeon::addRoom(std::shared_ptr<Room> room)
 
 std::vector<std::shared_ptr<Room>> Dungeon::getLastGenerationRoomsPtr()
 {
-	return lastGenerationRooms;
+	//PROBLEM HERE
+	return this->lastGenerationRooms;
 }
 
 void Dungeon::printRoomList()
@@ -157,12 +158,15 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 	// if no generation Age, push all temp rooms in generated rooms
 	if (generationAge == 0)
 	{
+
 		rooms.insert(rooms.end(), temporaryRooms.begin(), temporaryRooms.end());
+
 	}
 
 	// Else, we randomly select created ones
 	else
 	{
+
 		int roomVectorSize = temporaryRooms.size();
 		int basicGenerationCount = 3;
 		if (basicGenerationCount > roomVectorSize)
@@ -178,9 +182,13 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 			bool isGenerated = false;
 			while (isGenerated == false)
 			{
+				// THIS IS WHERE THE FUN BEGINS ...
+
 				std::uniform_int_distribution<int> roomIndexToGenerate = std::uniform_int_distribution<int>{ 0, roomVectorSize };
+				
 				int roomIndex = roomIndexToGenerate(generator);
 				auto find = std::find(roomIndexGenerated.begin(), roomIndexGenerated.end(), roomIndex);
+				
 				if (find != roomIndexGenerated.end())
 				{
 					roomIndexGenerated.push_back(roomIndex);
@@ -210,11 +218,12 @@ void Dungeon::clearLastGenerationRooms()
 void Dungeon::generateRoomsByLastGeneratedRooms(int generationAge)
 {
 	if (getLastGenerationRoomsPtr().size() != 0) {
-	for (int i = 0; i < getLastGenerationRoomsPtr().size(); i++)
-	{
+		
+		for (int i = 0; i < getLastGenerationRoomsPtr().size(); i++)
+		{
 		auto lastRoom = getLastGenerationRoomsPtr()[i];
 		generateRooms(lastRoom, generationAge);
-	}
+		}
 	}
 	else {
 		auto room = rooms[0];
