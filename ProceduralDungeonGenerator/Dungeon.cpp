@@ -25,15 +25,15 @@ void Dungeon::printRoomList()
 	{
 		Room firstRoom = *rooms[i];
 		std::cout << "room " << i + 1 << " --- " << firstRoom.getCoords().getX() << " : " << firstRoom.getCoords().getY() << std::endl;
+		std::cout << "age : " << firstRoom.getAge() << std::endl;
 		for (int j = 0; j < rooms.size(); j++)
 		{
 			Room secondRoom = *rooms[j];
-
 			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.NORTH_DIRECTION_INCREMENT)) std::cout << "neighbor at north" << std::endl;
 			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.SOUTH_DIRECTION_INCREMENT)) std::cout << "neighbor at south" << std::endl;
 			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.EAST_DIRECTION_INCREMENT)) std::cout << "neighbor at east" << std::endl;
 			if (checkDirectionnalNeighbor(firstRoom, secondRoom, d.WEST_DIRECTION_INCREMENT)) std::cout << "neighbor at west" << std::endl;
-
+			
 		}
 
 	}
@@ -150,7 +150,7 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 	for (int i = 0; i < temporaryRooms.size(); i++)
 	{
 		Room room = *temporaryRooms[i];
-		std::cout << room.getCoords().getX() << ":" << room.getCoords().getY() << std::endl;
+		std::cout <<"Temporary room -- " << room.getCoords().getX() << ":" << room.getCoords().getY() << std::endl;
 	}
 
 
@@ -192,6 +192,10 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 				{
 					roomIndexGenerated.push_back(roomIndex);
 					isGenerated = true;
+				}
+				else
+				{
+					break;
 				}
 
 			}
