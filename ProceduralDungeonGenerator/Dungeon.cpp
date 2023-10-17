@@ -16,7 +16,6 @@ void Dungeon::addRoom(std::shared_ptr<Room> room)
 
 std::vector<std::shared_ptr<Room>> Dungeon::getLastGenerationRoomsPtr()
 {
-	//PROBLEM HERE
 	return this->lastGenerationRooms;
 }
 
@@ -183,7 +182,7 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 			while (isGenerated == false)
 			{
 				// THIS IS WHERE THE FUN BEGINS ...
-
+				// SURELY There is an infinite loop
 				std::uniform_int_distribution<int> roomIndexToGenerate = std::uniform_int_distribution<int>{ 0, roomVectorSize };
 				
 				int roomIndex = roomIndexToGenerate(generator);
