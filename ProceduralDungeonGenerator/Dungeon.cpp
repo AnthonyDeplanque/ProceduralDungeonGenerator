@@ -165,7 +165,7 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 			basicGenerationCount = roomVectorSize;
 		}
 		// We maxx the basic generation count to 3. it will increment every 3 rooms;
-		int generationNumber = floor(basicGenerationCount + (generationAge / 3));
+		int generationNumber = floor(basicGenerationCount + ((generationAge / 3) - 1));
 		std::random_device generator;
 		std::vector<int> roomIndexGenerated;
 
@@ -188,8 +188,6 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 					std::cout << roomIndexGenerated[j] << " " ;
 				}
 				std::cout << std::endl;
-
-
 				auto find = std::find(roomIndexGenerated.begin(), roomIndexGenerated.end(), roomIndex);
 				
 				if (find == roomIndexGenerated.end())
