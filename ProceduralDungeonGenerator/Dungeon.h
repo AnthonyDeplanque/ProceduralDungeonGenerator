@@ -10,7 +10,7 @@ class Dungeon
 public:
 	Dungeon();
 	void addRoom(std::shared_ptr<Room> room);
-	void printRoomList();
+	void printRoomList(bool neighbors=false);
 
 	std::vector<std::shared_ptr<Room>> getRoomPtrList();
 	void generateRooms(std::shared_ptr<Room> room, int generationAge);
