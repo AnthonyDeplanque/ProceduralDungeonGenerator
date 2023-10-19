@@ -204,16 +204,32 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 
 		clearLastGenerationRooms();
 		// NO LAST GENERATION ROOMS
+		//for (int i = 0; i < roomIndexesGenerated.size(); i++)
+		//{
+		//	if (temporaryRooms.size() <= roomIndexesGenerated[i])
+		//	{
+		//		addRoom(temporaryRooms[roomIndexesGenerated[i]]);
+		//		lastGenerationRooms.push_back(temporaryRooms[roomIndexesGenerated[i]]);
+		//	}
+
+		//}
+
+		// CHATGPT SOLUTION 
+
 		for (int i = 0; i < roomIndexesGenerated.size(); i++)
 		{
-
-			// HERE IT IS !!! THE PROBLEM !!
-			addRoom(temporaryRooms[roomIndexesGenerated[i]]);
-
-
-			lastGenerationRooms.push_back(temporaryRooms[roomIndexesGenerated[i]]);
-
+			int index = roomIndexesGenerated[i];
+			if (index >= 0 && index < temporaryRooms.size())
+			{
+				addRoom(temporaryRooms[index]);
+				lastGenerationRooms.push_back(temporaryRooms[index]);
+			}
 		}
+
+
+
+
+
 
 	}
 	temporaryRooms.clear();
