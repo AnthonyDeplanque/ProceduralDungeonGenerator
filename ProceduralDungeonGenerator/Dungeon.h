@@ -20,11 +20,12 @@ public:
 
 
 private:
-	Room createTemporaryRoom(Vector2d roomCoords);
+	Room createRoomByCoordsAndAge(Vector2d roomCoords, int generationAge);
 	std::vector<Vector2d> createTemporaryNeighborsCoords(Vector2d origin);
 	bool checkRoomNeighbors(Vector2d newRoomCoords); // return true if no neighbors except parent room for the future room
 	bool checkDirectionnalNeighbor(Room firstRoom, Room secondRoom, Vector2d direction);
 	std::vector<std::shared_ptr<Vector2d>> prepareFutureRooms(Room &parentRoom);
+	bool checkIfRoomAlreadyExist(Vector2d roomCoords, Vector2d otherCoords);
 
 	void clearLastGenerationRooms();
 
