@@ -26,7 +26,7 @@ void Dungeon::printRoomList(bool neighbors)
 		Room firstRoom = *rooms[i];
 		std::cout << "room " << i + 1 << " --- " << firstRoom.getCoords().getX() << " : " << firstRoom.getCoords().getY() << " --- ";
 		std::cout << "age : " << firstRoom.getAge() << std::endl;
-		if (neighbors) 
+		if (neighbors)
 		{
 			for (int j = 0; j < rooms.size(); j++)
 			{
@@ -166,7 +166,7 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 		// We maxx the basic generation count to 3. it will increment every 3 rooms;
 		int generationNumber = floor(basicGenerationCount + ((generationAge / 3) - 1));
 		if (generationNumber < 0) generationNumber = 0;
-		if (generationNumber >= roomVectorSize) generationNumber = roomVectorSize -1;
+		if (generationNumber >= roomVectorSize) generationNumber = roomVectorSize - 1;
 
 		std::random_device generator;
 		std::vector<int> roomIndexesGenerated;
@@ -207,7 +207,9 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 		for (int i = 0; i < roomIndexesGenerated.size(); i++)
 		{
 
+			// HERE IT IS !!! THE PROBLEM !!
 			addRoom(temporaryRooms[roomIndexesGenerated[i]]);
+
 
 			lastGenerationRooms.push_back(temporaryRooms[roomIndexesGenerated[i]]);
 
