@@ -12,7 +12,7 @@ int main()
 
 	std::shared_ptr<Room> dungeonRoom = dungeon.getRoomPtrList()[0];
 
-	for (int i = 0; i <16; i++)
+	for (int i = 0; i <17; i++)
 	{
 		dungeon.generateRoomsByLastGeneratedRooms(i);
 	}

@@ -5,20 +5,20 @@
 class Room
 {
 public:
-	inline Room(const int x, const int y, int age) 
+	inline Room(const int x, const int y, int p_age) 
 	{
 		coords = Vector2d(0,0);
 		coords.setX(x);
 		coords.setY(y);
-		age = age;
+		age = p_age;
 	};
 
-	inline Room(Vector2d p_coords, int age) { 
+	inline Room(Vector2d p_coords, int p_age) { 
 		coords = p_coords; 
-		age = age;
+		age = p_age;
 	}
 
-	Room(Direction to, Room *parentRoomPtr, int age) ;
+	Room(Direction to, Room *parentRoomPtr, int p_age) ;
 	
 	//inline ~Room() { std::cout << "room deleted" << std::endl; }
 	

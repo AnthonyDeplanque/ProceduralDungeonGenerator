@@ -19,7 +19,6 @@ Vector2d Vector2d::operator+(Vector2d const other)
 	return Vector2d(newX, newY);
 }
 
-
 bool Vector2d::operator==(Vector2d const other)
 {
 	return (x == other.getX() && y == other.getY());
