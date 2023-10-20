@@ -130,7 +130,6 @@
     <ClCompile Include="DirectionIncrementation.cpp" />
     <ClCompile Include="DirectionIncrementation.h" />
     <ClCompile Include="Dungeon.cpp" />
-    <ClCompile Include="Neighbors.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Room.cpp" />
     <ClCompile Include="Vector2d.cpp" />
@@ -138,7 +137,6 @@
   <ItemGroup>
     <ClInclude Include="Direction.h" />
     <ClInclude Include="Dungeon.h" />
-    <ClInclude Include="Neighbors.h" />
     <ClInclude Include="Room.h" />
     <ClInclude Include="Vector2d.h" />
   </ItemGroup>

@@ -1,20 +1,38 @@
 #pragma once
 #include <iostream>
 #include <vector>
-
+#include "DirectionIncrementation.h"
 #include "Room.h"
+#include "Vector2d.h"
 
 class Dungeon
 {
 public:
 	Dungeon();
 	void addRoom(std::shared_ptr<Room> room);
-	void printRoomList();
+	void printRoomList(bool neighbors=false);
 
 	std::vector<std::shared_ptr<Room>> getRoomPtrList();
+	void generateRooms(std::shared_ptr<Room> room, int generationAge);
 
-	//inline std::vector<std::shared_ptr<Room>> getRooms() {} ;
+	std::vector<std::shared_ptr<Room>> getLastGenerationRoomsPtr();
+	void generateRoomsByLastGeneratedRooms(int generationAge);
+
+
 private:
-	std::vector<std::shared_ptr<Room>> rooms{};
+	Room createRoomByCoordsAndAge(Vector2d roomCoords, int generationAge);
+	std::vector<Vector2d> createTemporaryNeighborsCoords(Vector2d origin);
+	bool checkRoomNeighbors(Vector2d newRoomCoords); // return true if no neighbors except parent room for the future room
+	bool checkDirectionnalNeighbor(Room firstRoom, Room secondRoom, Vector2d direction);
+	std::vector<std::shared_ptr<Vector2d>> prepareFutureRooms(Room &parentRoom);
+	bool checkIfRoomAlreadyExist(Vector2d roomCoords, Vector2d otherCoords);
+
+	void clearLastGenerationRooms();
+
+
+	DirectionIncrementation d;
+	std::vector<std::shared_ptr<Room>> rooms{}; // Generated rooms
+	std::vector<std::shared_ptr<Room>> temporaryRooms{}; // Temp rooms
+	std::vector<std::shared_ptr<Room>> lastGenerationRooms{}; // Rooms generated from the last generation
 };
 
