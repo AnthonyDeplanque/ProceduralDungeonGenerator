@@ -3,13 +3,13 @@
 DirectionIncrementation d;
 
 
-Room::Room(Direction to, Room* parentRoomPtr, int age) 
+Room::Room(Direction to, Room* parentRoomPtr, int p_age) 
 {
 	std::cout << "Room ctor > " << parentRoomPtr << std::endl;
 	coords = Vector2d(0, 0);
 	coords += parentRoomPtr->getCoords();
 
-	this->age = age;
+	this->age = p_age;
 
 	switch (to)
 	{
