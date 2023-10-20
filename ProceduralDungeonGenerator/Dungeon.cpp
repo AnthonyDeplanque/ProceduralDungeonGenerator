@@ -206,17 +206,28 @@ void Dungeon::generateRooms(std::shared_ptr<Room> room, int generationAge)
 			{
 				auto temporaryRoom = temporaryRooms[index];
 
-					addRoom(temporaryRoom);
-					lastGenerationRooms.push_back(temporaryRoom);
+				addRoom(temporaryRoom);
+				lastGenerationRooms.push_back(temporaryRoom);
 			}
 
 		}
-		std::sort(rooms.begin(), rooms.end());
-		rooms.erase(std::unique(rooms.begin(), rooms.end()), rooms.end());
-
-		std::sort(lastGenerationRooms.begin(), lastGenerationRooms.end());
-		lastGenerationRooms.erase(std::unique(lastGenerationRooms.begin(), lastGenerationRooms.end()), lastGenerationRooms.end());
 	}
+//#region delete duplicate
+// Tri des vecteurs
+	std::sort(rooms.begin(), rooms.end(), [](const std::shared_ptr<Room>& a, const std::shared_ptr<Room>& b) 
+		{
+		return a->getCoords() < b->getCoords();
+		}
+	);
+
+	// Suppression des doublons
+	rooms.erase(std::unique(rooms.begin(), rooms.end(), [](const std::shared_ptr<Room>& a, const std::shared_ptr<Room>& b) {
+		return a->getCoords() == b->getCoords();
+		}), rooms.end());
+
+	std::sort(lastGenerationRooms.begin(), lastGenerationRooms.end());
+	lastGenerationRooms.erase(std::unique(lastGenerationRooms.begin(), lastGenerationRooms.end()), lastGenerationRooms.end());
+//#endregion
 	temporaryRooms.clear();
 }
 

@@ -24,3 +24,13 @@ bool Vector2d::operator==(Vector2d const other)
 {
 	return (x == other.getX() && y == other.getY());
 }
+
+bool Vector2d::operator<(Vector2d const other)
+{
+	return (x < other.getX() && y < other.getY());
+}
+
+bool Vector2d::operator>(Vector2d const other)
+{
+	return (x > other.getX() && y > other.getY());
+}

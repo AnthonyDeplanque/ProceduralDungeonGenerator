@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Direction.h"
 #include "Vector2d.h"
+#include "DirectionIncrementation.h"
 class Room
 {
 public:

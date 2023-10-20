@@ -13,6 +13,8 @@ public:
 	void operator+=(Vector2d const other);
 	Vector2d operator+(Vector2d const other);
 	bool operator==(Vector2d const other);
+	bool operator<(Vector2d const other);
+	bool operator>(Vector2d const other);
 
 private:
 	int x{0};
